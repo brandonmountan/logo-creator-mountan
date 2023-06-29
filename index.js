@@ -1,12 +1,46 @@
 const inquirer = require('inquirer')
 const fs = require('fs')
 
+// class svgPrint {
+//     constructor(text, textColor, shape, shapeColor) {
+//         this.text = text;
+//         this.textColor = textColor;
+//         this.shape = shape;
+//         this.shapeColor = shapeColor;
+//     }
+
+//     createSVG() {
+//         fs.writeFile('./lib/logo.svg', theShape, (err) => 
+//         err ? console.log(err) : console.log('success'));
+//     }
+// }
+
+// class square extends svgPrint {
+//     constructor(text, textColor, shape, shapeColor) {
+//         super(text, textColor, shapeColor);
+//         this.shape = shape
+//     }
+// }
+
+
 const svgPrint = ({
     text,
     textColor,
     shape,
     shapeColor,
-}) => `${text}${textColor}${shape}${shapeColor}`
+}) => `
+    <svg version="1.1"
+        width="300" height="200"
+        xmlns="http://www.w3.org/2000/svg">
+
+    ${shape} fill="${shapeColor}" />
+
+    <text x="150" y="125" font-size="60" text-anchor="middle" fill="${textColor}">${text}</text>
+
+    </svg>
+
+    `;
+
 
 inquirer
 .prompt([
@@ -39,21 +73,21 @@ inquirer
     console.log(answers)
     switch (answers.shape) {
         case 'circle':
-            answers.shape = '';
+            answers.shape = '<circle cx="150" cy="100" r="100"';
             let circleSvgBlueprint = svgPrint(answers)
-            fs.writeFile('testSVG.svg', circleSvgBlueprint, (err) => 
+            fs.writeFile('./examples/logo.svg', circleSvgBlueprint, (err) => 
             err ? console.log(err) : console.log('success'));
             break;
         case 'triangle':
-            answers.shape = '';
+            answers.shape = '<polygon points="150, 18 244, 182 56, 182"';
             let triangleSvgBlueprint = svgPrint(answers)
-            fs.writeFile('testSVG.svg', triangleSvgBlueprint, (err) => 
+            fs.writeFile('./examples/logo.svg', triangleSvgBlueprint, (err) => 
             err ? console.log(err) : console.log('success'));
             break;    
         case 'square':
-            answers.shape = '';
+            answers.shape = '<rect x="75" y="25" width="150" height="150"';
             let squareSvgBlueprint = svgPrint(answers)
-            fs.writeFile('testSVG.svg', squareSvgBlueprint, (err) => 
+            fs.writeFile('./examples/logo.svg', squareSvgBlueprint, (err) => 
             err ? console.log(err) : console.log('success'));
             break;
     };
@@ -62,15 +96,4 @@ inquirer
     console.log(error);
 })
 
-// fs.writeFile('testSVG.svg', svg, (err) => {  
-//     // throws an error, you could also catch it here
-//     if (err) throw err;
-
-//     // success case, the file was saved
-//     console.log('SVG written!');
-// });
-
-
-// `<circle cx="25" cy="75" r="20"/>`
-
-// `<rect x="60" y="10" rx="10" ry="10" width="30" height="30"/>`
+module.exports = svgPrint;
