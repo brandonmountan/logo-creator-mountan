@@ -1,27 +1,8 @@
 const inquirer = require('inquirer')
 const fs = require('fs')
-
-// class svgPrint {
-//     constructor(text, textColor, shape, shapeColor) {
-//         this.text = text;
-//         this.textColor = textColor;
-//         this.shape = shape;
-//         this.shapeColor = shapeColor;
-//     }
-
-//     createSVG() {
-//         fs.writeFile('./lib/logo.svg', theShape, (err) => 
-//         err ? console.log(err) : console.log('success'));
-//     }
-// }
-
-// class square extends svgPrint {
-//     constructor(text, textColor, shape, shapeColor) {
-//         super(text, textColor, shapeColor);
-//         this.shape = shape
-//     }
-// }
-
+const shapes = require('./lib/shapes')
+const createSVG = shapes.createSVG
+const filename = 'logo.svg'
 
 const svgPrint = ({
     text,
@@ -41,34 +22,44 @@ const svgPrint = ({
 
     `;
 
+    const questions = 
+        [
+            { 
+            type: 'input',
+            name: 'text',
+            message: 'Enter up to three characters',
+            },
+            {
+            type: 'input',
+            name: 'textColor',
+            message: 'Enter a color (or hexidecimal code) for your text',
+            },
+            {
+            type: 'list',
+            name: 'shape',
+            choices: [
+                'circle',
+                'triangle',
+                'square',
+                ]
+            },
+            {
+            type: 'input',
+            name: 'shapeColor',
+            message: 'Enter a color (or hexidecimal code) for your shape',
+            },
+        ];
 
+function writeToFile(filename, data) {
+    fs.writeFile(filename, data, err => {
+        err ? console.log(err) : console.log('success')
+    })
+};
+
+
+function init() {
 inquirer
-.prompt([
-    { 
-    type: 'input',
-    name: 'text',
-    message: 'Enter up to three characters',
-    },
-    {
-    type: 'input',
-    name: 'textColor',
-    message: 'Enter a color (or hexidecimal code) for your text',
-    },
-    {
-    type: 'list',
-    name: 'shape',
-    choices: [
-        'circle',
-        'triangle',
-        'square',
-        ]
-    },
-    {
-    type: 'input',
-    name: 'shapeColor',
-    message: 'Enter a color (or hexidecimal code) for your shape',
-    },
-])
+.prompt(questions)
 .then((answers) => {
     console.log(answers)
     switch (answers.shape) {
@@ -95,5 +86,6 @@ inquirer
 .catch((error) => {
     console.log(error);
 })
+}
 
-module.exports = svgPrint;
+init();

@@ -6,3 +6,4 @@ The motivation behind building this project was to write good code that can be r
 
 ## Walkthrough video link
 
+https://drive.google.com/file/d/1G8fa2pnYEI8xIwUL4gt9wxk4b1UTb0dX/view
